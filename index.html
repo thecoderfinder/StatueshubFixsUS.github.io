@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statues Hub</title>
+    <style>
+        body {
+            background-color: #1a1a2e;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-y: auto;
+            transition: all 0.5s ease;
+            position: relative;
+            height: 100%;
+            min-height: 100vh;
+        }
+        .container {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            overflow: hidden;
+            padding: 0 20px;
+            flex: 1 0 auto;
+        }
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .star {
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: fall linear infinite;
+            will-change: transform;
+        }
+        @keyframes fall {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100vh); }
+        }
+        nav {
+            width: 100%;
+            background: linear-gradient(120deg, #4b0082, #1a1a2e);
+            padding: 15px 0;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            animation: slideDown 0.5s ease;
+            will-change: transform;
+        }
+        @keyframes slideDown {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+        nav a {
+            color: #d4a4eb;
+            text-decoration: none;
+            margin: 0 20px;
+            font-weight: bold;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+        nav a:hover {
+            color: #ffffff;
+            text-shadow: 0 0 15px #d4a4eb;
+        }
+        .content {
+            text-align: center;
+            padding: 60px 0;
+            background: linear-gradient(120deg, rgba(75, 0, 130, 0.8), rgba(26, 26, 46, 0.8));
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+            margin-top: 30px;
+            width: 85%;
+            max-width: 1000px;
+            animation: fadeIn 1s ease;
+            will-change: opacity;
+            position: relative;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .content h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+            text-shadow: 0 0 15px #d4a4eb;
+            animation: bounceIn 1s ease;
+        }
+        @keyframes bounceIn {
+            0% { transform: scale(0.5); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        .content p {
+            color: #d4a4eb;
+            margin-bottom: 30px;
+            font-size: 1.2em;
+            animation: slideUp 1s ease;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .nav-btn {
+            background-color: #2a2a4e;
+            padding: 15px 25px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #d4a4eb;
+            animation: float 6s ease-in-out infinite;
+            width: 120px;
+            height: 120px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="15" fill="%232a2a4e"/><text x="50" y="30" font-size="20" fill="%235a8de7" text-anchor="middle">&lt;/&gt;</text><text x="50" y="70" font-size="16" fill="%23fff" text-anchor="middle">Scripts</text></svg>') no-repeat center;
+            background-size: contain;
+            will-change: transform;
+        }
+        .nav-btn:nth-child(2) {
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="15" fill="%232a2a4e"/><text x="50" y="30" font-size="20" fill="%235a8de7" text-anchor="middle">📦</text><text x="50" y="70" font-size="16" fill="%23fff" text-anchor="middle">Packages</text></svg>') no-repeat center;
+            background-size: contain;
+            animation: float 6s ease-in-out infinite;
+            animation-delay: 2s;
+        }
+        .nav-btn:nth-child(3) {
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="15" fill="%232a2a4e"><path d="M50 20 L30 40 L70 40 Z" fill="%235a8de7"/></rect><text x="50" y="70" font-size="16" fill="%23fff" text-anchor="middle">Tutorials</text></svg>') no-repeat center;
+            background-size: contain;
+            animation: float 6s ease-in-out infinite;
+            animation-delay: 4s;
+        }
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0); }
+        }
+        .nav-btn:hover {
+            background-color: #3a3a6e;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+        }
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            animation: fadeIn 1s ease 0.5s backwards;
+        }
+        .btn {
+            background: linear-gradient(135deg, #a9b1d6, #d4a4eb);
+            color: #000000;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 6px 20px rgba(169, 177, 214, 0.6);
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+            animation: pulse 2s infinite;
+            will-change: transform;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .btn:hover {
+            background: linear-gradient(135deg, #d4a4eb, #a9b1d6);
+            box-shadow: 0 10px 30px rgba(212, 164, 235, 0.8);
+        }
+        .second-section {
+            display: none;
+            width: 85%;
+            max-width: 1000px;
+            margin-top: 40px;
+            background: linear-gradient(120deg, #4b0082, #1a1a2e);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+            padding: 30px;
+            position: relative;
+            animation: slideIn 0.5s ease;
+            will-change: transform, opacity;
+        }
+        @keyframes slideIn {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 2em;
+            cursor: pointer;
+            color: #d4a4eb;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+            animation: rotateIn 0.5s ease;
+        }
+        @keyframes rotateIn {
+            from { transform: rotate(-90deg); opacity: 0; }
+            to { transform: rotate(0); opacity: 1; }
+        }
+        .close-btn:hover {
+            color: #ffffff;
+            text-shadow: 0 0 15px #d4a4eb;
+        }
+        .search-bar {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            animation: bounceIn 1s ease;
+        }
+        .item {
+            background: linear-gradient(135deg, #16213e, #2a2a4e);
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 15px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeIn 1s ease;
+            display: block;
+            will-change: transform;
+            cursor: pointer;
+        }
+        .item.hidden {
+            display: none;
+        }
+        .item:hover {
+            background: linear-gradient(135deg, #2a2a4e, #3a3a6e);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+        }
+        .item a {
+            color: #d4a4eb;
+            text-decoration: none;
+            margin-left: 10px;
+        }
+        .pagination {
+            margin-top: 30px;
+            color: #d4a4eb;
+            text-align: center;
+            animation: fadeIn 1s ease 0.5s backwards;
+        }
+        #background-options {
+            display: none;
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            background: linear-gradient(135deg, #4b0082, #1a1a2e);
+            border-radius: 15px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            padding: 20px;
+            z-index: 99;
+            width: 200px;
+            animation: slideDown 0.5s ease;
+            will-change: transform;
+        }
+        .bg-btn {
+            display: block;
+            margin: 10px 0;
+            padding: 10px;
+            background: linear-gradient(135deg, #a9b1d6, #d4a4eb);
+            color: #000000;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            width: 100%;
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+        .bg-btn:hover {
+            background: linear-gradient(135deg, #d4a4eb, #a9b1d6);
+        }
+        #admin-panel {
+            display: none;
+            width: 85%;
+            max-width: 1000px;
+            margin-top: 40px;
+            background: linear-gradient(120deg, #4b0082, #1a1a2e);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+            padding: 30px;
+            animation: slideIn 0.5s ease;
+            will-change: transform, opacity;
+        }
+        #admin-panel input {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: none;
+        }
+        #admin-panel button {
+            background: linear-gradient(135deg, #a9b1d6, #d4a4eb);
+            color: #000000;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-right: 10px;
+            transition: background 0.3s ease;
+        }
+        #admin-panel button:hover {
+            background: linear-gradient(135deg, #d4a4eb, #a9b1d6);
+        }
+        .options-section {
+            display: none;
+            width: 85%;
+            max-width: 1000px;
+            margin-top: 40px;
+            background: linear-gradient(120deg, #4b0082, #1a1a2e);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+            padding: 30px;
+            position: relative;
+            animation: slideIn 0.5s ease;
+            will-change: transform, opacity;
+        }
+        .option-btn {
+            background: linear-gradient(135deg, #a9b1d6, #d4a4eb);
+            color: #000000;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 6px 20px rgba(169, 177, 214, 0.6);
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+            margin: 10px 0;
+            width: 200px;
+        }
+        .option-btn:hover {
+            background: linear-gradient(135deg, #d4a4eb, #a9b1d6);
+            box-shadow: 0 10px 30px rgba(212, 164, 235, 0.8);
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(120deg, #4b0082, #1a1a2e);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            text-align: center;
+            max-width: 200px;
+        }
+        @keyframes shake {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(-5px, 5px); }
+            50% { transform: translate(5px, -5px); }
+            75% { transform: translate(-5px, 5px); }
+            100% { transform: translate(0, 0); }
+        }
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(120deg, #4b0082, #1a1a2e);
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+            z-index: 1001;
+            text-align: center;
+            color: #d4a4eb;
+            animation: fadeInNotification 0.3s ease, fadeOutNotification 0.5s ease 4.7s forwards;
+            display: none;
+        }
+        @keyframes fadeInNotification {
+            from { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+        @keyframes fadeOutNotification {
+            from { opacity: 1; transform: translateX(-50%) translateY(0); }
+            to { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+        }
+        .broadcast-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(120deg, #4b0082, #1a1a2e);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+            z-index: 1001;
+            text-align: center;
+            font-size: 1.5em;
+            color: #d4a4eb;
+        }
+        .debug-instructions {
+            display: none;
+            position: fixed;
+            top: 100px;
+            left: 20px;
+            background: rgba(75, 0, 130, 0.8);
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            z-index: 1002;
+            max-width: 250px;
+        }
+        .editable-text {
+            cursor: pointer;
+        }
+        .custom-button {
+            background: linear-gradient(135deg, #a9b1d6, #d4a4eb);
+            color: #000000;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 5px;
+            transition: background 0.3s ease;
+        }
+        .custom-button:hover {
+            background: linear-gradient(135deg, #d4a4eb, #a9b1d6);
+        }
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .content, .second-section, .options-section {
+                width: 90%;
+                padding: 20px;
+            }
+            .nav-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            .nav-btn {
+                width: 100px;
+                height: 100px;
+                margin: 10px 0;
+            }
+            .buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            .option-btn {
+                width: 100%;
+                max-width: 250px;
+            }
+            .popup {
+                bottom: 10px;
+                right: 10px;
+                max-width: 150px;
+                padding: 10px;
+            }
+            .notification {
+                top: 10px;
+                padding: 10px 15px;
+                font-size: 0.9em;
+            }
+            .broadcast-popup {
+                font-size: 1.2em;
+                padding: 15px;
+            }
+            .debug-instructions {
+                top: 80px;
+                left: 10px;
+                max-width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="stars"></div>
+        <nav>
+            <a href="#" onclick="checkPassword()">Statues Hub</a>
+            <a href="#" onclick="showHome()">Home</a>
+            <a href="#" onclick="toggleBackgroundOptions()">Background</a>
+            <a href="#" onclick="showMoreSection()">More</a>
+        </nav>
+        <div class="content" id="main-content">
+            <h1 class="editable-text">Welcome to Statues Hub</h1>
+            <p class="editable-text">Your ultimate destination for Unity packages, videos, and more.</p>
+            <div class="nav-buttons">
+                <div class="nav-btn"><span class="icon"></span>Scripts</div>
+                <div class="nav-btn"><span class="icon"></span>Packages</div>
+                <div class="nav-btn"><span class="icon"></span>Tutorials</div>
+            </div>
+            <div class="buttons">
+                <button class="btn">Join Server</button>
+                <button class="btn" onclick="showPackagesSection()">Unity Packages and Videos</button>
+            </div>
+        </div>
+        <div class="second-section" id="packages-section">
+            <span class="close-btn" onclick="hidePackagesSection()">&times;</span>
+            <input type="text" class="search-bar" placeholder="Search Videos and Unity Packages..." oninput="filterItems(this.value)">
+            <div class="item" onclick="showOptionsSection()">Statues Clean Up</div>
+            <div class="item" onclick="showBanOptionsSection()">Showing PlayFab Ban Reason and Time</div>
+            <div class="item" onclick="showMonsterFootstepsClosedSection()">Monster Footsteps Closed</div>
+        </div>
+        <div class="options-section" id="options-section" style="display: none;">
+            <span class="close-btn" onclick="hideOptionsSection()">&times;</span>
+            <button class="option-btn" onclick="showYoutubePopup()">Youtube</button>
+            <button class="option-btn" onclick="downloadStatuesCleanUp()">Download</button>
+        </div>
+        <div class="options-section" id="ban-options-section" style="display: none;">
+            <span class="close-btn" onclick="hideBanOptionsSection()">&times;</span>
+            <button class="option-btn" onclick="showYoutubePopup()">Youtube</button>
+            <button class="option-btn" onclick="downloadPlayfabLogin()">Download</button>
+        </div>
+        <div class="options-section" id="monster-footsteps-closed-section" style="display: none;">
+            <span class="close-btn" onclick="hideMonsterFootstepsClosedSection()">&times;</span>
+            <button class="option-btn" onclick="openYoutubeLink('https://youtu.be/0P2iL7GxbDk')">Youtube</button>
+            <button class="option-btn" onclick="downloadMonsterFootstepsClosed()">Download</button>
+        </div>
+        <div class="second-section" id="more-section" style="display: none;">
+            <span class="close-btn" onclick="hideMoreSection()">&times;</span>
+            <div style="background: rgba(75, 0, 130, 0.5); margin-top: 20px; padding: 20px;">
+                <h2 class="editable-text">More Content</h2>
+                <p class="editable-text">This section is here to ensure scrolling works. Add more details or sections as needed!</p>
+            </div>
+        </div>
+        <div id="youtube-popup" class="popup">
+            <p>Coming Soon</p>
+        </div>
+        <div id="background-options">
+            <button class="bg-btn" onclick="changeBackground('#1a1a2e')">Dark Navy</button>
+            <button class="bg-btn" onclick="changeBackground('linear-gradient(135deg, #4b0082, #1a1a2e, #ffffff)')">Purple Navy White</button>
+            <button class="bg-btn" onclick="changeBackground('linear-gradient(135deg, #1a1a2e, #4b0082, #ffffff)')">Navy Purple White</button>
+        </div>
+        <div id="admin-panel">
+            <h2>Owner Access Panel</h2>
+            <input type="text" id="global-message" placeholder="Enter global message...">
+            <button onclick="sendGlobalMessage()">Send Global Message</button>
+            <input type="text" id="test-emoji" placeholder="Enter emoji (e.g., 😊)">
+            <input type="text" id="test-text" placeholder="Enter text after Hello">
+            <button onclick="activateTestMode()">Test Mode</button>
+            <button onclick="toggleDebugMode()">Toggle Debug Mode</button>
+            <p>Note: All actions are client-side and do not affect any real server or website.</p>
+        </div>
+        <div id="broadcast-popup" class="broadcast-popup"></div>
+        <div id="notification" class="notification"></div>
+        <div id="debug-instructions" class="debug-instructions">
+            <p>Debug Mode Instructions:<br>- Double-click text to edit (temporary).<br>- Quadruple-click to add a customizable button.</p>
+        </div>
+    </div>
+
+    <script>
+        // Create falling dots (stars)
+        function createStars() {
+            const starsContainer = document.querySelector('.stars');
+            for (let i = 0; i < 50; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                star.style.width = `${Math.random() * 2 + 1}px`;
+                star.style.height = star.style.width;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.animationDuration = `${Math.random() * 5 + 5}s`;
+                star.style.animationDelay = `${Math.random() * 5}s`;
+                starsContainer.appendChild(star);
+            }
+        }
+        createStars();
+
+        let debugMode = false;
+
+        function toggleDebugMode() {
+            debugMode = !debugMode;
+            const instructions = document.getElementById('debug-instructions');
+            instructions.style.display = debugMode ? 'block' : 'none';
+            if (debugMode) {
+                console.log('Debug Mode Activated');
+                alert('Debug Mode ON - Check console for logs and follow instructions.');
+                document.querySelectorAll('.editable-text').forEach(element => {
+                    element.addEventListener('dblclick', () => {
+                        if (debugMode) {
+                            const currentText = element.textContent;
+                            const input = document.createElement('input');
+                            input.value = currentText;
+                            input.style.width = `${element.offsetWidth}px`;
+                            input.style.padding = '5px';
+                            input.style.borderRadius = '5px';
+                            element.textContent = '';
+                            element.appendChild(input);
+                            input.focus();
+                            input.onblur = input.onkeydown = (e) => {
+                                if (e.type === 'blur' || e.key === 'Enter') {
+                                    element.textContent = input.value || currentText;
+                                    element.appendChild(document.createTextNode(element.textContent));
+                                }
+                            };
+                        }
+                    });
+                    element.addEventListener('click', (e) => {
+                        if (debugMode) {
+                            let clickCount = element.getAttribute('data-click-count') || 0;
+                            clickCount = parseInt(clickCount) + 1;
+                            element.setAttribute('data-click-count', clickCount);
+                            if (clickCount === 4) {
+                                const button = document.createElement('button');
+                                button.className = 'custom-button';
+                                button.textContent = 'New Button';
+                                const action = prompt('Enter button action (e.g., alert("Hello")):');
+                                if (action) {
+                                    button.onclick = new Function(action);
+                                }
+                                element.parentNode.insertBefore(button, element.nextSibling);
+                                element.setAttribute('data-click-count', 0);
+                            } else if (clickCount > 4) {
+                                element.setAttribute('data-click-count', 0);
+                            }
+                        }
+                    });
+                });
+            } else {
+                console.log('Debug Mode Deactivated');
+                alert('Debug Mode OFF');
+            }
+        }
+
+        function showPackagesSection() {
+            document.getElementById('packages-section').style.display = 'block';
+            document.getElementById('main-content').style.display = 'none';
+            document.getElementById('more-section').style.display = 'none';
+            document.getElementById('options-section').style.display = 'none';
+            document.getElementById('ban-options-section').style.display = 'none';
+            document.getElementById('monster-footsteps-closed-section').style.display = 'none';
+        }
+
+        function hidePackagesSection() {
+            document.getElementById('packages-section').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+        }
+
+        function showOptionsSection() {
+            document.getElementById('options-section').style.display = 'block';
+            document.getElementById('packages-section').style.display = 'none';
+            document.getElementById('ban-options-section').style.display = 'none';
+            document.getElementById('monster-footsteps-closed-section').style.display = 'none';
+        }
+
+        function hideOptionsSection() {
+            document.getElementById('options-section').style.display = 'none';
+            document.getElementById('packages-section').style.display = 'block';
+        }
+
+        function showBanOptionsSection() {
+            document.getElementById('ban-options-section').style.display = 'block';
+            document.getElementById('packages-section').style.display = 'none';
+            document.getElementById('options-section').style.display = 'none';
+            document.getElementById('monster-footsteps-closed-section').style.display = 'none';
+        }
+
+        function hideBanOptionsSection() {
+            document.getElementById('ban-options-section').style.display = 'none';
+            document.getElementById('packages-section').style.display = 'block';
+        }
+
+        function showMonsterFootstepsClosedSection() {
+            document.getElementById('monster-footsteps-closed-section').style.display = 'block';
+            document.getElementById('packages-section').style.display = 'none';
+            document.getElementById('options-section').style.display = 'none';
+            document.getElementById('ban-options-section').style.display = 'none';
+        }
+
+        function hideMonsterFootstepsClosedSection() {
+            document.getElementById('monster-footsteps-closed-section').style.display = 'none';
+            document.getElementById('packages-section').style.display = 'block';
+        }
+
+        function showYoutubePopup() {
+            document.getElementById('youtube-popup').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('youtube-popup').style.display = 'none';
+            }, 5000);
+        }
+
+        function openYoutubeLink(url) {
+            if (confirm('Would you like to open the YouTube link?')) {
+                window.open(url, '_blank');
+            }
+        }
+
+        function downloadPlayfabLogin() {
+            const code = `using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using PlayFab;
+using System.Threading.Tasks;
+using PlayFab.ClientModels;
+using UnityEngine.SceneManagement;
+using System.Globalization;
+using System;
+using TMPro;
+using Photon.VR;
+
+public class Playfablogin : MonoBehaviour
+{
+    [Header("COSMETICS")]
+    public static Playfablogin instance;
+    public string MyPlayFabID;
+    public string CatalogName;
+    public List<GameObject> specialitems;
+    public List<GameObject> disableitems;
+    [Header("CURRENCY")]
+    public string CurrencyName;
+    public TextMeshPro currencyText;
+    public int coins;
+    [Header("BAN STUFF")]
+    public GameObject[] StuffToDisable;
+    public GameObject[] StuffToEnable;
+    public MeshRenderer[] StuffToMaterialChange;
+    public Material MaterialToChangeToo;
+    public TextMeshPro[] BanTimes;
+    public TextMeshPro[] BanReasons;
+    [Header("TITLE DATA")]
+    public TextMeshPro MOTDText;
+    [Header("PLAYER DATA")]
+    public TextMeshPro UserName;
+    public string StartingUsername;
+    public string Name;
+    [SerializeField]
+    public bool UpdateName;
+    [Header("DON'T DESTROY ON LOAD")]
+    public GameObject[] DDOLObjects;
+
+    public void Awake()
+    {
+        instance = this;
+    }
+
+    void Start()
+    {
+        login();
+    }
+
+    public void login()
+    {
+        var request = new LoginWithCustomIDRequest
+        {
+            CustomId = SystemInfo.deviceUniqueIdentifier,
+            CreateAccount = true,
+            InfoRequestParameters = new GetPlayerCombinedInfoRequestParams
+            {
+                GetPlayerProfile = true
+            }
+        };
+        PlayFabClientAPI.LoginWithCustomID(request, OnLoginSuccess, OnError);
+    }
+
+    public void OnLoginSuccess(LoginResult result)
+    {
+        Debug.Log("logging in");
+        GetAccountInfoRequest InfoRequest = new GetAccountInfoRequest();
+        PlayFabClientAPI.GetAccountInfo(InfoRequest, AccountInfoSuccess, OnError);
+        StartCoroutine(DDOLStuff());
+        GetVirtualCurrencies();
+        GetMOTD();
+    }
+
+    public void AccountInfoSuccess(GetAccountInfoResult result)
+    {
+        MyPlayFabID = result.AccountInfo.PlayFabId;
+
+        PlayFabClientAPI.GetUserInventory(new GetUserInventoryRequest(),
+        (result) =>
+        {
+            foreach (var item in result.Inventory)
+            {
+                if (item.CatalogVersion == CatalogName)
+                {
+                    for (int i = 0; i < specialitems.Count; i++)
+                    {
+                        if (specialitems[i].name == item.ItemId)
+                        {
+                            specialitems[i].SetActive(true);
+                        }
+                    }
+                    for (int i = 0; i < disableitems.Count; i++)
+                    {
+                        if (disableitems[i].name == item.ItemId)
+                        {
+                            disableitems[i].SetActive(false);
+                        }
+                    }
+                }
+            }
+        },
+        (error) =>
+        {
+            Debug.LogError(error.GenerateErrorReport());
+        });
+    }
+
+    async void Update()
+    {
+    }
+
+    public void GetVirtualCurrencies()
+    {
+        PlayFabClientAPI.GetUserInventory(new GetUserInventoryRequest(), OnGetUserInventorySuccess, OnError);
+    }
+
+    void OnGetUserInventorySuccess(GetUserInventoryResult result)
+    {
+        coins = result.VirtualCurrency["GB"];
+        currencyText.text = "You Have : " + coins.ToString() + " " + CurrencyName;
+    }
+
+    private void OnError(PlayFabError error)
+    {
+        if (error.Error == PlayFabErrorCode.AccountBanned)
+        {
+            PhotonVRManager.Manager.Disconnect();
+            foreach (GameObject obj in StuffToDisable)
+            {
+                obj.SetActive(false);
+            }
+            foreach (GameObject obj in StuffToEnable)
+            {
+                obj.SetActive(true);
+            }
+            foreach (MeshRenderer rend in StuffToMaterialChange)
+            {
+                rend.material = MaterialToChangeToo;
+            }
+            foreach (var item in error.ErrorDetails)
+            {
+                foreach (TextMeshPro BanTime in BanTimes)
+                {
+                    if (item.Value[0] == "Indefinite")
+                    {
+                        BanTime.text = "Permanent Ban";
+                    }
+                    else
+                    {
+                        string playFabTime = item.Value[0];
+                        DateTime unityTime;
+                        try
+                        {
+                            unityTime = DateTime.ParseExact(playFabTime, "yyyy-MM-dd'T'HH:mm:ss", CultureInfo.InvariantCulture);
+                            TimeSpan timeLeft = unityTime.Subtract(DateTime.UtcNow);
+                            int hoursLeft = (int)timeLeft.TotalHours;
+                            BanTime.text = string.Format("Hours Left: {0}", hoursLeft);
+                        }
+                        catch (FormatException ex)
+                        {
+                            Debug.LogErrorFormat("Failed to parse PlayFab time '{0}': {1}", playFabTime, ex.Message);
+                        }
+                    }
+                }
+                foreach (TextMeshPro BanReason in BanReasons)
+                {
+                    BanReason.text = string.Format("Reason: {0}", item.Key);
+                }
+            }
+        }
+        else
+        {
+            login();
+        }
+    }
+
+    public void GetMOTD()
+    {
+        PlayFabClientAPI.GetTitleData(new GetTitleDataRequest(), MOTDGot, OnError);
+    }
+
+    public void MOTDGot(GetTitleDataResult result)
+    {
+        if (result.Data == null || result.Data.ContainsKey("MOTD") == false)
+        {
+            Debug.Log("No MOTD");
+            return;
+        }
+        MOTDText.text = result.Data["MOTD"];
+    }
+    IEnumerator DDOLStuff()
+    {
+        Scene scene = SceneManager.GetActiveScene();
+        yield return new WaitForSeconds(0.1f);
+        foreach (GameObject Obj in DDOLObjects)
+        {
+            DontDestroyOnLoad(Obj);
+        }
+    }
+}`;
+            const blob = new Blob([code], { type: 'text/plain' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'Playfablogin.cs';
+            a.click();
+        }
+
+        function downloadStatuesCleanUp() {
+            const code = `using UnityEngine;
+
+public class StatuesCleanUp : MonoBehaviour
+{
+    // Placeholder script for Statues Clean Up functionality
+    // Add your Statues Clean Up logic here
+    void Start()
+    {
+        Debug.Log("Statues Clean Up initialized.");
+    }
+
+    void Update()
+    {
+        // Example cleanup logic
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            CleanUpStatues();
+        }
+    }
+
+    void CleanUpStatues()
+    {
+        // Implement statue cleanup logic here
+        Debug.Log("Cleaning up statues...");
+    }
+}`;
+            const blob = new Blob([code], { type: 'text/plain' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'StatuesCleanUp.cs';
+            a.click();
+        }
+
+        function downloadMonsterFootstepsClosed() {
+            const code = `using UnityEngine;
+using System.Collections.Generic;
+
+[RequireComponent(typeof(AudioSource))]
+public class MonsterFootstepAudio : MonoBehaviour
+{
+    [Header("🎵 Footstep Clips")]
+    public List<AudioClip> footstepClips = new List<AudioClip>();
+
+    [Header("🏃 Movement Settings")]
+    public Transform monsterRoot;
+    public float minSpeedThreshold = 0.1f;
+    public float baseInterval = 1f;
+
+    [Header("🔊 Audio Settings")]
+    public float basePitch = 1f;
+    public float pitchMultiplier = 0.05f;
+    public float maxPitch = 2f;
+    public float spatialBlend = 1f;
+    public float volume = 1f;
+
+    private AudioSource audioSource;
+    private Vector3 lastPosition;
+    private float timer = 0f;
+    private int clipIndex = 0;
+
+    void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+        audioSource.spatialBlend = spatialBlend;
+        audioSource.volume = volume;
+        audioSource.playOnAwake = false;
+        audioSource.loop = false;
+    }
+
+    void Start()
+    {
+        lastPosition = monsterRoot.position;
+    }
+
+    void Update()
+    {
+        float speed = (monsterRoot.position - lastPosition).magnitude / Time.deltaTime;
+        lastPosition = monsterRoot.position;
+
+        if (speed < minSpeedThreshold || footstepClips.Count == 0)
+        {
+            timer = 0f;
+            return;
+        }
+
+        float interval = baseInterval / speed;
+        timer += Time.deltaTime;
+
+        if (timer >= interval)
+        {
+            PlayNextClip(speed);
+            timer = 0f;
+        }
+    }
+
+    void PlayNextClip(float speed)
+    {
+        if (footstepClips.Count == 0) return;
+
+        audioSource.clip = footstepClips[clipIndex];
+        audioSource.pitch = Mathf.Clamp(basePitch + speed * pitchMultiplier, basePitch, maxPitch);
+        audioSource.Play();
+
+        clipIndex = (clipIndex + 1) % footstepClips.Count;
+    }
+}`;
+            const blob = new Blob([code], { type: 'text/plain' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'sd.cs';
+            a.click();
+        }
+
+        function toggleBackgroundOptions() {
+            const options = document.getElementById('background-options');
+            options.style.display = options.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function changeBackground(color) {
+            document.body.style.backgroundColor = color.includes('gradient') ? '' : color;
+            if (color.includes('gradient')) {
+                document.body.style.background = color;
+            }
+            toggleBackgroundOptions();
+        }
+
+        function checkPassword() {
+            const password = prompt('Enter password for owner access:');
+            if (password === '80') {
+                document.getElementById('admin-panel').style.display = 'block';
+            } else {
+                alert('Incorrect password!');
+            }
+        }
+
+        function sendGlobalMessage() {
+            const message = document.getElementById('global-message').value;
+            if (message) {
+                localStorage.setItem('globalMessage', message);
+                const popup = document.getElementById('broadcast-popup');
+                popup.textContent = message;
+                popup.style.display = 'block';
+                setTimeout(() => {
+                    popup.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        window.addEventListener('storage', (event) => {
+            if (event.key === 'globalMessage') {
+                const message = event.newValue;
+                if (message) {
+                    const popup = document.getElementById('broadcast-popup');
+                    popup.textContent = message;
+                    popup.style.display = 'block';
+                    setTimeout(() => {
+                        popup.style.display = 'none';
+                    }, 5000);
+                }
+            }
+        });
+
+        function filterItems(query) {
+            const items = document.querySelectorAll('.item');
+            items.forEach(item => {
+                if (item.textContent.toLowerCase().includes(query.toLowerCase())) {
+                    item.classList.remove('hidden');
+                } else {
+                    item.classList.add('hidden');
+                }
+            });
+        }
+
+        function activateTestMode() {
+            const emoji = document.getElementById('test-emoji').value || '😊';
+            const text = document.getElementById('test-text').value || '';
+
+            document.body.style.animation = 'shake 1s';
+            setTimeout(() => {
+                document.body.style.animation = '';
+            }, 1000);
+
+            setTimeout(() => {
+                const popup = document.getElementById('broadcast-popup');
+                popup.textContent = `Hello ${emoji} ${text}`;
+                popup.style.display = 'block';
+                setTimeout(() => {
+                    popup.style.display = 'none';
+                }, 2000);
+            }, 1000);
+        }
+
+        function showHome() {
+            document.getElementById('main-content').style.display = 'block';
+            document.getElementById('packages-section').style.display = 'none';
+            document.getElementById('more-section').style.display = 'none';
+            document.getElementById('options-section').style.display = 'none';
+            document.getElementById('ban-options-section').style.display = 'none';
+            document.getElementById('monster-footsteps-closed-section').style.display = 'none';
+        }
+
+        function showMoreSection() {
+            document.getElementById('more-section').style.display = 'block';
+            document.getElementById('main-content').style.display = 'none';
+            document.getElementById('packages-section').style.display = 'none';
+            document.getElementById('options-section').style.display = 'none';
+            document.getElementById('ban-options-section').style.display = 'none';
+            document.getElementById('monster-footsteps-closed-section').style.display = 'none';
+        }
+
+        function hideMoreSection() {
+            document.getElementById('more-section').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
